@@ -18,8 +18,8 @@ export class AnimeAPIWrapper {
         params.set('size', limit);
         
 
-        const url = 'https://anime-db.p.rapidapi.com/anime?'+params.toString();
-        //const url = 'https://gabidt76.fr/prout.php?'+params.toString();    
+        // const url = 'https://anime-db.p.rapidapi.com/anime?'+params.toString();
+        const url = 'https://gabidut76.fr/prout.php?'+params.toString();
         
 
 

@@ -5,12 +5,14 @@
 
 import {AnimeAPIWrapper} from "./api.js"
 import { Search } from "./search.js";
+import {ApiKeyStore} from "./apiKeyStore.js";
 
-(async () => {
-//const APIWrapper = new AnimeAPIWrapper();
-//console.log(await APIWrapper.getAnimeList());
+const apiKeyStore = new ApiKeyStore();
 
-const search = new Search();
-console.log(await search.getResults());
+const animeAPI = new AnimeAPIWrapper(apiKeyStore.getCurrentApiKey());
 
-})()
+document.addEventListener("DOMContentLoaded", async () => {
+    await apiKeyStore.checkAPIKey();
+    const search = new Search(animeAPI);
+    console.log(await search.getResults());
+})
