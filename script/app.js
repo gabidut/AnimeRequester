@@ -1,5 +1,5 @@
 /***
- * (C) 2026 Hugo FAVEROULT
+ * (C) 2026 Hugo FAVEROULT, gabidut, WewennJr
  * https://github.com/gabidut/AnimeRequester
  */
 

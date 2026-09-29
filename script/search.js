@@ -3,7 +3,7 @@
  * https://github.com/gabidut/AnimeRequester
  */
 
-import { AnimeAPIWrapper } from "./api.js";
+import {AnimeAPIWrapper} from "./api.js";
 import {CardFactory} from "./card.js";
 
 export class Search {
@@ -42,7 +42,6 @@ export class Search {
 
 
     async displayResults(searchValue) {
-
         (await this.animeAPI.getAnimeList(1, 10, searchValue)).data.forEach((anime) => {
             this.resultZone.appendChild(
                 this.cardFactory.renderCard(anime)
