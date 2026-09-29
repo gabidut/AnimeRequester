@@ -9,8 +9,10 @@ import {ApiKeyStore} from "./apiKeyStore.js";
 
 const apiKeyStore = new ApiKeyStore();
 
+const animeAPI = new AnimeAPIWrapper(apiKeyStore.getCurrentApiKey());
+
 document.addEventListener("DOMContentLoaded", async () => {
     await apiKeyStore.checkAPIKey();
-    const search = new Search(APIWrapper);
+    const search = new Search(animeAPI);
     console.log(await search.getResults());
 })
