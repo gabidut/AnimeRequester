@@ -4,9 +4,13 @@
  */
 
 import {AnimeAPIWrapper} from "./api.js"
+import { Search } from "./search.js";
 
 (async () => {
-const APIWrapper = new AnimeAPIWrapper();
-console.log(await APIWrapper.getAnimeList());
+//const APIWrapper = new AnimeAPIWrapper();
+//console.log(await APIWrapper.getAnimeList());
+
+const search = new Search();
+console.log(await search.getResults());
 
 })()
