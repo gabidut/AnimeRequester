@@ -3,39 +3,51 @@
  * https://github.com/gabidut/AnimeRequester
  */
 
-import { AnimeAPIWrapper } from "./api";
-import {CardFactory} from "./card";
-
-const searchInput = document.getElementById("search-input");
-const searchButton = document.getElementById("search-button");
-const resultZone = document.getElementById("result-zone");
-
+import { AnimeAPIWrapper } from "./api.js";
+import {CardFactory} from "./card.js";
 
 export class Search {
 
     /** @type {AnimeAPIWrapper} */
     animeAPI;
-
+    /** @type {HTMLElement} */
+    resultZone;
     /** @type {CardFactory} */
     cardFactory;
 
     /**
      * 
-     * @param {AnimeAPIWrapper} animeAPI 
+     * @param {AnimeAPIWrapper} animeAPI
+     * @param {HTMLElement} resultZone 
      */
-    constructor(animeAPI) {
+    constructor(animeAPI, resultZone) {
         if (animeAPI == null) {
             throw new Error("No API key provided");
         }
         this.animeAPI = animeAPI;
 
-        this.cardFactory = new CardFactory(animeAPI, document.getElementById("result-zone"));
+        this.resultZone = resultZone;
 
-        searchButton.addEventListener("click", this.getResults)
+        this.cardFactory = new CardFactory(animeAPI, resultZone);
+
+    }
+    
+    /** 
+     * @param {HTMLButtonElement} searchInput
+     * @param {HTMLButtonElement} searchButton
+    */
+    initListeners(searchInput, searchButton) {
+        searchButton.addEventListener("click", () => this.displayResults(searchInput.value));
     }
 
-    async getResults() {
-        //TODO: this.cardFactory.renderCard(await this.animeAPI.getAnimeList(1, 10, searchInput.value));
+
+    async displayResults(searchValue) {
+
+        (await this.animeAPI.getAnimeList(1, 10, searchValue)).data.forEach((anime) => {
+            this.resultZone.appendChild(
+                this.cardFactory.renderCard(anime)
+            );
+        });
     }
 
 }

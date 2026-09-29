@@ -13,6 +13,13 @@ export class AnimeAPIWrapper {
         this.isUsingDevAPI = !isUsingDevAPI;
     }
 
+    /**
+     * 
+     * @param {*} page 
+     * @param {*} limit 
+     * @param {*} search 
+     * @returns {{meta: {currentPage: number, totalPages: number, totalCount: number}, data: Anime[]}}
+     */
     async getAnimeList(page = 1, limit = 10, search = null) {
         const params = new URLSearchParams();
         params.set('search', search);
