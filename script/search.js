@@ -3,10 +3,10 @@
  * https://github.com/gabidut/AnimeRequester
  */
 
-import { AnimeAPIWrapper } from "./api";
+import { AnimeAPIWrapper } from "./api.js";
 
-searchInput = document.getElementById("search-input");
-resultZone = document.getElementById("result-zone");
+const searchInput = document.getElementById("search-input");
+const resultZone = document.getElementById("result-zone");
 
 
 export class Search {
