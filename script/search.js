@@ -4,6 +4,7 @@
  */
 
 import { AnimeAPIWrapper } from "./api";
+import {CardFactory} from "./card";
 
 const searchInput = document.getElementById("search-input");
 const searchButton = document.getElementById("search-button");
@@ -12,7 +13,11 @@ const resultZone = document.getElementById("result-zone");
 
 export class Search {
 
+    /** @type {AnimeAPIWrapper} */
     animeAPI;
+
+    /** @type {CardFactory} */
+    cardFactory;
 
     /**
      * 
@@ -24,15 +29,13 @@ export class Search {
         }
         this.animeAPI = animeAPI;
 
+        this.cardFactory = new CardFactory(animeAPI, document.getElementById("result-zone"));
+
         searchButton.addEventListener("click", this.getResults)
     }
 
     async getResults() {
-        const p = document.createElement("p");
-        p.innerHTML = "test";
-        resultZone.appendChild(p);
-        //let result = await this.animeAPI.getAnimeList();
-        //return result;
+        //TODO: this.cardFactory.renderCard(await this.animeAPI.getAnimeList(1, 10, searchInput.value));
     }
 
 }

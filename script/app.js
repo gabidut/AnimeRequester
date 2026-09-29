@@ -9,7 +9,7 @@ import {ApiKeyStore} from "./apiKeyStore.js";
 
 const apiKeyStore = new ApiKeyStore();
 
-const animeAPI = new AnimeAPIWrapper(apiKeyStore.getCurrentApiKey());
+const animeAPI = new AnimeAPIWrapper(apiKeyStore.getCurrentApiKey(), true);
 
 document.addEventListener("DOMContentLoaded", async () => {
     await apiKeyStore.checkAPIKey();
