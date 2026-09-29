@@ -1,16 +1,19 @@
+*{
+    font-family:"Righteous", sans-serif;
+}
+
 body{
     background-color: #121212;
     color : aliceblue;
 }
 
 #search-button{
-    background: linear-gradient(135deg, #363636, #004085) ;
+    background: linear-gradient(135deg, #151515, #450085) ;
     color: rgb(178, 199, 226);
-    border: solid #006eee;
     padding: 10px 20px;
+    border: none;
     cursor: pointer;
     border-radius: 10px;
-    box-shadow: #001add;
 
 }
 
@@ -19,4 +22,22 @@ body{
     border-radius:10px;
     background-color: #252525; 
     color: #9e9eff;
+}
+
+#search-zone{
+    border: solid #101010;
+    border-radius: 10px;
+    background-color: #151515;
+    margin: 10px 20px;
+    padding: 10px 20px;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 12px 25px rgba(71, 0, 112, 0.719);
+}
+
+#search-bar{
+    padding-left: 35%;
+    align-items:center;
+    justify-content:center;
+    border: solid;
 }
