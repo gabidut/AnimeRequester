@@ -3,8 +3,8 @@
  * https://github.com/gabidut/AnimeRequester
  */
 
-searchInput = document.getElementById("search-input");
-resultZone = document.getElementById("result-zone");
+const searchInput = document.getElementById("search-input");
+const resultZone = document.getElementById("result-zone");
 
 
 export class Search {
