@@ -3,24 +3,49 @@
  * https://github.com/gabidut/AnimeRequester
  */
 
-const searchInput = document.getElementById("search-input");
-const resultZone = document.getElementById("result-zone");
-
+import {CardFactory} from "./card.js";
 
 export class Search {
 
+    /** @type {AnimeAPIWrapper} */
     animeAPI;
+    /** @type {HTMLElement} */
+    resultZone;
+    /** @type {CardFactory} */
+    cardFactory;
 
-    constructor(animeAPI) {
-        if (animeAPI == null) {
+    /**
+     * 
+     * @param {AnimeAPIWrapper} animeAPI
+     * @param {HTMLElement} resultZone 
+     */
+    constructor(animeAPI, resultZone) {
+        if (animeAPI === null) {
             throw new Error("No API key provided");
         }
         this.animeAPI = animeAPI;
+
+        this.resultZone = resultZone;
+
+        this.cardFactory = new CardFactory(animeAPI, resultZone);
+
+    }
+    
+    /** 
+     * @param {HTMLButtonElement} searchInput
+     * @param {HTMLButtonElement} searchButton
+    */
+    initListeners(searchInput, searchButton) {
+        searchButton.addEventListener("click", () => this.displayResults(searchInput.value));
     }
 
-    async getResults() {
-        let result = await this.animeAPI.getAnimeList();
-        return result;
+
+    async displayResults(searchValue) {
+        (await this.animeAPI.getAnimeList(1, 10, searchValue)).data.forEach((anime) => {
+            this.resultZone.appendChild(
+                this.cardFactory.renderCard(anime)
+            );
+        });
     }
 
 }
