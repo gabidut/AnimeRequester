@@ -57,3 +57,16 @@ export class Anime {
         this.hasEpisode = item.hasEpisode;
     }
 }
+
+/**
+ * @typedef {Object} AnimeGenreData
+ * @property {string} genreName
+*/
+export class AnimeGenre {
+    /** @type {string} */
+    genreName;
+
+    constructor(item) {
+        this.genreName = item.id;
+    }
+}
