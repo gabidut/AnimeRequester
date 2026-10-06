@@ -20,14 +20,13 @@ export class ApiKeyStore {
     }
 
     async promptForApiKey() {
-        return new Promise(async (resolve, reject) => {
-            let apiKey = prompt("Please enter your API key:");
-            if (apiKey) {
-                localStorage.setItem("apiKey", apiKey);
-            } else {
-                alert("API key is required to use this application.");
-                await this.promptForApiKey();
-            }
-        });
+        let apiKey = prompt("Please enter your API key:");
+
+        if (apiKey) {
+            localStorage.setItem("apiKey", apiKey);
+        } else {
+            alert("API key is required to use this application.");
+            await this.promptForApiKey();
+        }
     }
 }

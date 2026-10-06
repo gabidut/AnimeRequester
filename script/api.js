@@ -5,7 +5,7 @@
 import {Anime, AnimeGenre} from "./anime.js";
 
 export class AnimeAPIWrapper {
-    apiKey = '';
+    apiKey = "";
     isUsingDevAPI = false;
 
     constructor(apiKey, isUsingDevAPI = false) {
@@ -15,25 +15,25 @@ export class AnimeAPIWrapper {
 
     /**
      * 
-     * @param {*} page 
-     * @param {*} limit 
-     * @param {*} search 
+     * @param {number} page 
+     * @param {number} limit 
+     * @param {string|null} search 
      * @returns {{meta: {currentPage: number, totalPages: number, totalCount: number}, data: Anime[]}}
      */
     async getAnimeList(page = 1, limit = 10, search = null) {
         const params = new URLSearchParams();
-        params.set('search', search);
-        params.set('page', page);
-        params.set('size', limit);
+        params.set("search", search);
+        params.set("page", page);
+        params.set("size", limit);
 
 
-        const url = this.isUsingDevAPI ? 'https://anime-db.p.rapidapi.com/anime?' + params.toString() : 'https://gabidut76.fr/prout.php?' + params.toString();
+        const url = this.isUsingDevAPI ? "https://anime-db.p.rapidapi.com/anime?" + params.toString() : "https://gabidut76.fr/prout.php?" + params.toString();
 
         const options = {
-            method: 'GET',
+            method: "GET",
             headers: this.isUsingDevAPI ? {
-                'x-rapidapi-key': this.apiKey,
-                'x-rapidapi-host': 'anime-db.p.rapidapi.com'
+                "x-rapidapi-key": this.apiKey,
+                "x-rapidapi-host": "anime-db.p.rapidapi.com"
             } : {}
         };
 
@@ -57,12 +57,12 @@ export class AnimeAPIWrapper {
      * @return {Promise<AnimeGenre[]>}
      */
     async getGenres() {
-        const url = this.isUsingDevAPI ? 'https://anime-db.p.rapidapi.com/genre' : 'https://duteurtre.eu/genres.json';
+        const url = this.isUsingDevAPI ? "https://anime-db.p.rapidapi.com/genre" : "https://duteurtre.eu/genres.json";
         const options = {
-            method: 'GET',
+            method: "GET",
             headers: this.isUsingDevAPI ? {
-                'x-rapidapi-key': this.apiKey,
-                'x-rapidapi-host': 'anime-db.p.rapidapi.com'
+                "x-rapidapi-key": this.apiKey,
+                "x-rapidapi-host": "anime-db.p.rapidapi.com"
             } : {}
         };
 
@@ -83,12 +83,12 @@ export class AnimeAPIWrapper {
      * @return {Promise<Anime>}
      */
     async getAnimeById(id) {
-        const url = this.isUsingDevAPI ? `https://anime-db.p.rapidapi.com/anime/by-id/{id}` : `https://gabidut76.fr/prout.php?id=${id}`;
+        const url = this.isUsingDevAPI ? `https://anime-db.p.rapidapi.com/anime/by-id/${id}` : `https://gabidut76.fr/prout.php?id=${id}`;
         const options = {
-            method: 'GET',
+            method: "GET",
             headers: this.isUsingDevAPI ? {
-                'x-rapidapi-key': this.apiKey,
-                'x-rapidapi-host': 'anime-db.p.rapidapi.com'
+                "x-rapidapi-key": this.apiKey,
+                "x-rapidapi-host": "anime-db.p.rapidapi.com"
             } : {}
         };
 

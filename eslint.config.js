@@ -3,6 +3,10 @@ import globals from "globals";
 import html from "eslint-plugin-html";
 
 export default [
+    {
+        ignores: ["dist/"]
+    },
+
     js.configs.recommended,
 
     {

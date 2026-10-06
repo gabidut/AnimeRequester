@@ -3,7 +3,6 @@
  * https://github.com/gabidut/AnimeRequester
  */
 
-import {AnimeAPIWrapper} from "./api.js";
 import {CardFactory} from "./card.js";
 
 export class Search {
@@ -21,7 +20,7 @@ export class Search {
      * @param {HTMLElement} resultZone 
      */
     constructor(animeAPI, resultZone) {
-        if (animeAPI == null) {
+        if (animeAPI === null) {
             throw new Error("No API key provided");
         }
         this.animeAPI = animeAPI;
