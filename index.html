@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Requester</title>
+    <title>Anime Requester - Accueil</title>
     <link rel="stylesheet" href="./style/style.css">
     <script src="./script/app.js" type="module"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Righteous&display=swap" rel="stylesheet">
@@ -14,19 +15,33 @@
 
 <body>
     <header>
-        <h1>Anime Requester</h1>
+        <nav>
+            <h1>Anime Requester</h1>
+            <a href="./index.html" id="current-page">Accueil</a>
+            <a href="./advanced-search.html">Recherche avancée</a>
+            <a href="./ranking.html">Classement</a>
+        </nav>
     </header>
+
     <main>
-        <div id="search-zone">
+        <section id="search-zone">
+            <h2>Recherche rapide</h2>
+
             <div id="search-bar">
-                <input type="text" id="search-input" placeholder="Rechercher un anime ...">
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Rechercher un anime..."
+                >
                 <button id="search-button">Rechercher</button>
             </div>
-        </div>
-        <div id="result-zone">
+        </section>
 
-        </div>
+        <section id="result-zone">
+            <h2>Résultats</h2>
+        </section>
     </main>
+
     <footer>
         <p>© 2026 gabidut; WewennJr; ZeraleX; Faveroult Hugo. Tous droits réservés.</p>
     </footer>

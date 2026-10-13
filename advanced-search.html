@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recherche avancée - Anime Requester</title>
+
+    <link rel="stylesheet" href="./style/style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Righteous&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <h1>Anime Requester</h1>
+
+        <nav>
+            <a href="./index.html">Accueil</a>
+            <a href="./advanced-search.html" aria-current="page">Recherche avancée</a>
+            <a href="./ranking.html">Classement</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Recherche avancée</h2>
+
+        <section id="advanced-search-zone">
+            <form id="advanced-search-form">
+
+                <div>
+                    <label for="search-input">Nom de l'anime</label>
+                    <input
+                        type="text"
+                        id="search-input"
+                        name="search"
+                        placeholder="Ex. : Naruto"
+                    >
+                </div>
+
+                <div>
+                    <label for="genre-select">Genre</label>
+                    <select id="genre-select" name="genre">
+                        <option value="">Tous les genres</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="type-select">Type d'anime</label>
+                    <select id="type-select" name="type">
+                        <option value="">Tous les types</option>
+                        <option value="TV">Série TV</option>
+                        <option value="Movie">Film</option>
+                        <option value="OVA">OVA</option>
+                        <option value="ONA">ONA</option>
+                        <option value="Special">Spécial</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="status-select">Statut</label>
+                    <select id="status-select" name="status">
+                        <option value="">Tous les statuts</option>
+                        <option value="Currently Airing">En cours de diffusion</option>
+                        <option value="Finished Airing">Terminé</option>
+                        <option value="Not yet aired">Pas encore diffusé</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="year-min">Année de sortie</label>
+
+                    <div>
+                        <label for="year-min">De</label>
+                        <input
+                            type="number"
+                            id="year-min"
+                            name="year-min"
+                            min="1900"
+                            max="2100"
+                            placeholder="Année minimale"
+                        >
+
+                        <label for="year-max">À</label>
+                        <input
+                            type="number"
+                            id="year-max"
+                            name="year-max"
+                            min="1900"
+                            max="2100"
+                            placeholder="Année maximale"
+                        >
+                    </div>
+                </div>
+
+                <div>
+                    <label for="score-min">Note minimale</label>
+                    <input
+                        type="number"
+                        id="score-min"
+                        name="score-min"
+                        min="0"
+                        max="10"
+                        step="0.1"
+                        placeholder="Ex. : 7.5"
+                    >
+                </div>
+
+                <div>
+                    <label for="episodes-min">Nombre d'épisodes</label>
+
+                    <div>
+                        <label for="episodes-min">Minimum</label>
+                        <input
+                            type="number"
+                            id="episodes-min"
+                            name="episodes-min"
+                            min="0"
+                            placeholder="Minimum"
+                        >
+
+                        <label for="episodes-max">Maximum</label>
+                        <input
+                            type="number"
+                            id="episodes-max"
+                            name="episodes-max"
+                            min="0"
+                            placeholder="Maximum"
+                        >
+                    </div>
+                </div>
+
+                <div>
+                    <label for="sort-select">Trier les résultats par</label>
+                    <select id="sort-select" name="sort">
+                        <option value="">Pertinence</option>
+                        <option value="title-asc">Titre (A à Z)</option>
+                        <option value="title-desc">Titre (Z à A)</option>
+                        <option value="score-desc">Note décroissante</option>
+                        <option value="score-asc">Note croissante</option>
+                        <option value="year-desc">Année (plus récent)</option>
+                        <option value="year-asc">Année (plus ancien)</option>
+                        <option value="episodes-desc">Nombre d'épisodes décroissant</option>
+                        <option value="episodes-asc">Nombre d'épisodes croissant</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="results-per-page">Résultats par page</label>
+                    <select id="results-per-page" name="results-per-page">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button type="submit" id="advanced-search-button">
+                        Rechercher
+                    </button>
+
+                    <button type="reset" id="reset-button">
+                        Réinitialiser les filtres
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+        <section id="results-section">
+            <h2>Résultats</h2>
+
+            <div id="result-zone">
+                <!-- Les résultats seront ajoutés ici ultérieurement -->
+            </div>
+        </section>
+    </main>
+
+<footer>
+        <p>© 2026 gabidut; WewennJr; ZeraleX; Faveroult Hugo. Tous droits réservés.</p>
+    </footer>
+    <script type="module" src="./script/app.js"></script>
+</body>
+</html>
