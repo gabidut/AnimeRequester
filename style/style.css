@@ -1,5 +1,3 @@
-
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Righteous&display=swap');
 
 :root {
@@ -63,12 +61,24 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* ---------- En-tête & navigation ---------- */
+
 header {
     width: 100%;
     padding: 3rem 1.5rem 1.5rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 1rem;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem 0.5rem;
 }
 
 h1 {
@@ -82,6 +92,42 @@ h1 {
     background-clip: text;
 }
 
+nav h1 {
+    flex-basis: 100%;
+}
+
+nav a {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.45rem 1.1rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-full);
+    transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+nav a:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-surface);
+    border-color: var(--border);
+}
+
+nav a#current-page,
+nav a[aria-current="page"] {
+    color: var(--accent);
+    background-color: var(--primary-subtle);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+
+nav a:focus-visible {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* ---------- Contenu principal ---------- */
+
 main {
     flex: 1;
     width: 100%;
@@ -93,21 +139,44 @@ main {
     align-items: center;
 }
 
-#search-zone {
+main h2 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    font-size: 1.5rem;
+    letter-spacing: 0.3px;
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: 1.25rem;
+}
+
+#search-zone h2,
+#advanced-search-zone h2,
+#ranking-filters h2 {
+    margin-bottom: 0.9rem;
+}
+
+#search-zone,
+#advanced-search-zone,
+#ranking-filters {
     width: 100%;
-    max-width: 640px;
     background-color: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    padding: 1rem 1.25rem;
     box-shadow: var(--shadow-sm);
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    margin-bottom: 2.5rem;
 }
 
-#search-zone:focus-within {
+#search-zone:focus-within,
+#advanced-search-zone:focus-within,
+#ranking-filters:focus-within {
     border-color: var(--border-hover);
     box-shadow: var(--shadow-md);
+}
+
+#search-zone {
+    max-width: 640px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2.5rem;
 }
 
 #search-bar {
@@ -141,7 +210,9 @@ main {
     box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
 }
 
-#search-button {
+#search-button,
+#advanced-search-button,
+#ranking-button {
     font-family: var(--font-body);
     font-weight: 500;
     font-size: 0.95rem;
@@ -158,12 +229,192 @@ main {
     transition: background-color var(--transition-fast), transform var(--transition-fast);
 }
 
-#search-button:hover {
+#search-button:hover,
+#advanced-search-button:hover,
+#ranking-button:hover {
     background-color: var(--primary-hover);
 }
 
-#search-button:active {
+#search-button:active,
+#advanced-search-button:active,
+#ranking-button:active {
     transform: scale(0.98);
+}
+
+#reset-button {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    background-color: transparent;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+#reset-button:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-card-hover);
+    border-color: var(--border-hover);
+}
+
+#reset-button:active {
+    transform: scale(0.98);
+}
+
+#search-button:focus-visible,
+#advanced-search-button:focus-visible,
+#ranking-button:focus-visible,
+#reset-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+/* ---------- Recherche avancée ---------- */
+
+#advanced-search-zone {
+    max-width: 900px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+#advanced-search-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem 1.5rem;
+    align-items: start;
+}
+
+#advanced-search-form > div:last-child {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-subtle);
+}
+
+/* Libellés (formulaire avancé + filtres du classement) */
+#advanced-search-form label,
+#ranking-filters label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.2px;
+    margin-bottom: 0.4rem;
+}
+
+/* Champs de plage (année, épisodes) : "De [ ]  À [ ]" */
+#advanced-search-form div div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+}
+
+#advanced-search-form div div label {
+    margin-bottom: 0;
+    color: var(--text-muted);
+}
+
+/* Champs de saisie et listes déroulantes */
+#advanced-search-form input,
+#advanced-search-form select,
+#ranking-filters select {
+    width: 100%;
+    min-width: 0;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+#advanced-search-form input::placeholder {
+    color: var(--text-muted);
+}
+
+#advanced-search-form input:hover,
+#advanced-search-form select:hover,
+#ranking-filters select:hover {
+    border-color: var(--border-hover);
+}
+
+#advanced-search-form input:focus,
+#advanced-search-form select:focus,
+#ranking-filters select:focus {
+    border-color: var(--border-focus);
+    background-color: #151824;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+#advanced-search-form select,
+#ranking-filters select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2394a3b8' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px 8px;
+}
+
+#advanced-search-form select option,
+#ranking-filters select option {
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+}
+
+#advanced-search-form input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* ---------- Classement ---------- */
+
+#ranking-zone {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#ranking-filters {
+    max-width: 900px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem 1.25rem;
+}
+
+#ranking-filters > div {
+    flex: 1 1 180px;
+    min-width: 0;
+}
+
+#ranking-button {
+    flex: 0 0 auto;
+}
+
+/* ---------- Résultats ---------- */
+
+#results-section {
+    width: 100%;
 }
 
 #result-zone {
@@ -172,6 +423,11 @@ main {
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 1.5rem;
     align-items: stretch;
+}
+
+#result-zone > h2 {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
 }
 
 .anime-card,
@@ -268,6 +524,47 @@ main {
     color: var(--text-muted);
 }
 
+/* Cartes générées par card.js : div.card > h2 + img + p (synopsis) + p (classement) */
+.card img {
+    order: -1;
+}
+
+.card h2 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 0;
+    text-align: left;
+    line-height: 1.35;
+    color: var(--text-primary);
+    margin: 0 0 0.6rem;
+    padding: 1.25rem 1.25rem 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card p:first-of-type {
+    flex: 1 1 auto;
+    margin: 0 1.25rem 1.25rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card p:nth-of-type(2) {
+    margin: 0;
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
 /* États de chargement et messages */
 .loading,
 .loader-container {
@@ -341,6 +638,8 @@ footer p {
     background: #33384a;
 }
 
+/* ---------- Responsive ---------- */
+
 @media (max-width: 768px) {
     header {
         padding: 2rem 1rem 1rem;
@@ -348,6 +647,12 @@ footer p {
 
     #search-zone {
         padding: 0.85rem 1rem;
+        margin-bottom: 2rem;
+    }
+
+    #advanced-search-zone,
+    #ranking-filters {
+        padding: 1.1rem 1rem;
         margin-bottom: 2rem;
     }
 
@@ -364,6 +669,11 @@ footer p {
 }
 
 @media (max-width: 480px) {
+    nav a {
+        padding: 0.4rem 0.85rem;
+        font-size: 0.9rem;
+    }
+
     #search-bar {
         flex-direction: column;
         gap: 0.75rem;
@@ -376,6 +686,29 @@ footer p {
 
     #search-button {
         padding: 0.75rem 1rem;
+    }
+
+    #advanced-search-form {
+        grid-template-columns: 1fr;
+    }
+
+    #advanced-search-form > div:last-child {
+        flex-direction: column;
+    }
+
+    #advanced-search-button,
+    #reset-button,
+    #ranking-button {
+        width: 100%;
+    }
+
+    #ranking-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #ranking-filters > div {
+        flex: none;
     }
 
     #result-zone {
