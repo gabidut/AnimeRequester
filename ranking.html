@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classement - Anime Requester</title>
+    <link rel="stylesheet" href="./style/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Righteous&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>Anime Requester</h1>
+            <a href="./index.html">Accueil</a>
+            <a href="./advanced-search.html">Recherche avancée</a>
+            <a href="./ranking.html" id="current-page">Classement</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="ranking-zone">
+            <h2>Classement des animes</h2>
+
+            <div id="ranking-filters">
+                <div>
+                    <label for="ranking-type">Type de classement</label>
+                    <select id="ranking-type" name="ranking-type">
+                        <option value="score">Mieux notés</option>
+                        <option value="popularity">Plus populaires</option>
+                        <option value="recent">Plus récents</option>
+                        <option value="title">Ordre alphabétique</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="ranking-genre">Genre</label>
+                    <select id="ranking-genre" name="ranking-genre">
+                        <option value="">Tous les genres</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="ranking-limit">Nombre de résultats</label>
+                    <select id="ranking-limit" name="ranking-limit">
+                        <option value="10">10 animes</option>
+                        <option value="20">20 animes</option>
+                        <option value="50">50 animes</option>
+                    </select>
+                </div>
+
+                <button id="ranking-button" type="button">Afficher le classement</button>
+            </div>
+
+            <div id="result-zone">
+                <h2>Résultats du classement</h2>
+            </div>
+        </section>
+    </main>
+
+<footer>
+        <p>© 2026 gabidut; WewennJr; ZeraleX; Faveroult Hugo. Tous droits réservés.</p>
+    </footer>
+    <script type="module" src="./script/app.js"></script>
+</body>
+</html>

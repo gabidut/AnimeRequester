@@ -4,6 +4,7 @@
  */
 
 import {Anime} from "./anime.js";
+import {animeModal} from "./modal.js";
 
 export class CardFactory {
 
@@ -15,6 +16,9 @@ export class CardFactory {
     renderCard(anime) {
         const card = document.createElement("div");
         card.classList.add("card");
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("aria-label", `Voir les détails de ${anime.title}`);
 
         const title = document.createElement("h2");
         title.textContent = anime.title;
@@ -22,6 +26,7 @@ export class CardFactory {
 
         const image = document.createElement("img");
         image.src = anime.image;
+        image.alt = anime.title || "Affiche de l'anime";
         card.appendChild(image);
 
         const synopsis = document.createElement("p");
@@ -34,6 +39,16 @@ export class CardFactory {
             card.appendChild(ranking);
         }
 
+        card.addEventListener("click", () => {
+            animeModal.open(anime);
+        });
+
+        card.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                animeModal.open(anime);
+            }
+        });
 
         return card;
     }

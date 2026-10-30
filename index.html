@@ -1,28 +1,57 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Requester</title>
+
+    <meta name="description"
+          content="Anime Requester est une application web qui vous permet de rechercher et de découvrir des animes. Trouvez vos séries préférées, explorez de nouveaux genres et consultez les classements des animes les mieux notés.">
+    <meta name="keywords" content="Anime, Recherche, Classement, Séries, Manga, Anime Requester">
+    <meta name="robots" content="index, follow">
+
+    <title>Anime Requester - Accueil</title>
     <link rel="stylesheet" href="./style/style.css">
     <script src="./script/app.js" type="module"></script>
-</head>
-<body>
-    <header>
-        <h1>Anime Requester</h1>
-    </header>
-    <main>
-        <div id="search-zone">
-            <div id="search-bar">
-                <input type="text" id="search-input" placeholder="Rechercher un anime ...">
-                <button id="search-button">Rechercher</button></div>
-            </div>
-        <div id="result-zone">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Righteous&display=swap"
+          rel="stylesheet">
+</head>
+
+<body>
+<header>
+    <nav>
+        <h1>Anime Requester</h1>
+        <a href="./index.html" id="current-page">Accueil</a>
+        <a href="./advanced-search.html">Recherche avancée</a>
+        <a href="./ranking.html">Classement</a>
+    </nav>
+</header>
+
+<main>
+    <section id="search-zone">
+        <h2>Recherche rapide</h2>
+
+        <div id="search-bar">
+            <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Rechercher un anime..."
+            >
+            <button id="search-button">Rechercher</button>
         </div>
-    </main>
-    <footer>
-        <p>© 2026 gabidut; WewennJr; ZeraleX; Faveroult Hugo. Tous droits réservés.</p>
-    </footer>
+    </section>
+
+    <section id="result-zone">
+        <h2>Résultats</h2>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 gabidut; WewennJr; ZeraleX; Faveroult Hugo. Tous droits réservés.</p>
+</footer>
 </body>
+
 </html>
