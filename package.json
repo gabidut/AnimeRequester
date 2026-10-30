@@ -8,7 +8,10 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "build": "vite build"
+    "build": "vite build",
+    "audit": "node scripts/audit.js",
+    "audit:w3c": "node scripts/audit.js --w3c",
+    "audit:lighthouse": "node scripts/audit.js --lighthouse"
   },
   "repository": {
     "type": "git",
