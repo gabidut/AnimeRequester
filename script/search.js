@@ -32,16 +32,23 @@ export class Search {
     }
     
     /** 
-     * @param {HTMLButtonElement} searchInput
+     * @param {HTMLInputElement} searchInput
      * @param {HTMLButtonElement} searchButton
     */
     initListeners(searchInput, searchButton) {
         searchButton.addEventListener("click", () => this.displayResults(searchInput.value));
+        searchInput.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                this.displayResults(searchInput.value);
+            }
+        });
     }
 
 
     async displayResults(searchValue) {
-        (await this.animeAPI.getAnimeList(1, 10, searchValue)).data.forEach((anime) => {
+        this.resultZone.innerHTML = "<h2>Résultats</h2>";
+        const response = await this.animeAPI.getAnimeList(1, 10, searchValue);
+        response.data.forEach((anime) => {
             this.resultZone.appendChild(
                 this.cardFactory.renderCard(anime)
             );
