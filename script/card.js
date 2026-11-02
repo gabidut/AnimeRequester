@@ -11,9 +11,10 @@ export class CardFactory {
     /**
      * Render a card for the given anime.
      * @param {Anime} anime
+     * @param {string|number|null} [rankDisplay=null]
      * @return {HTMLDivElement}
      */
-    renderCard(anime) {
+    renderCard(anime, rankDisplay = null) {
         const card = document.createElement("div");
         card.classList.add("card");
         card.setAttribute("role", "button");
@@ -33,9 +34,13 @@ export class CardFactory {
         synopsis.textContent = anime.synopsis;
         card.appendChild(synopsis);
 
-        if (anime.hasRanking) {
+        const displayedRank = rankDisplay !== null && rankDisplay !== undefined
+            ? (typeof rankDisplay === "number" ? `Ranking: #${rankDisplay}` : `${rankDisplay}`)
+            : (anime.hasRanking && anime.ranking ? `Ranking: ${anime.ranking}` : null);
+
+        if (displayedRank) {
             const ranking = document.createElement("p");
-            ranking.textContent = `Ranking: ${anime.ranking}`;
+            ranking.textContent = displayedRank;
             card.appendChild(ranking);
         }
 

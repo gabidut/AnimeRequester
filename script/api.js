@@ -48,9 +48,11 @@ export class AnimeAPIWrapper {
      * @param {number} limit 
      * @param {string|null} search 
      * @param {string|null} genre
+     * @param {string|null} [orderBy=null]
+     * @param {string|null} [sort=null]
      * @returns {Promise<{meta: {currentPage: number, totalPages: number, totalCount: number, hasNextPage: boolean}, data: Anime[]}>}
      */
-    async getAnimeList(page = 1, limit = 10, search = null, genre = null) {
+    async getAnimeList(page = 1, limit = 10, search = null, genre = null, orderBy = null, sort = null) {
         const params = new URLSearchParams();
         if (search) {
             params.set("q", search);
@@ -58,7 +60,13 @@ export class AnimeAPIWrapper {
         params.set("page", page.toString());
         params.set("limit", limit.toString());
         if (genre) {
-            params.set("genres", genre);
+            params.set("genres", genre.toString());
+        }
+        if (orderBy) {
+            params.set("order_by", orderBy);
+        }
+        if (sort) {
+            params.set("sort", sort);
         }
 
         const queryString = params.toString();
@@ -86,6 +94,44 @@ export class AnimeAPIWrapper {
         } catch (error) {
             throw new Error("Request error", error);
         }
+    }
+
+    /**
+     * Get ranked anime list.
+     * @param {string} [rankingType="score"]
+     * @param {number} [limit=10]
+     * @param {string|number|null} [genre=null]
+     * @param {number} [page=1]
+     * @returns {Promise<{meta: {currentPage: number, totalPages: number, totalCount: number, hasNextPage: boolean}, data: Anime[]}>}
+     */
+    async getRanking(rankingType = "score", limit = 10, genre = null, page = 1) {
+        let orderBy;
+        let sort;
+
+        switch (rankingType) {
+            case "score":
+                orderBy = "score";
+                sort = "desc";
+                break;
+            case "popularity":
+                orderBy = "members";
+                sort = "desc";
+                break;
+            case "recent":
+                orderBy = "start_date";
+                sort = "desc";
+                break;
+            case "title":
+                orderBy = "title";
+                sort = "asc";
+                break;
+            default:
+                orderBy = "score";
+                sort = "desc";
+                break;
+        }
+
+        return this.getAnimeList(page, limit, null, genre, orderBy, sort);
     }
 
     /**
