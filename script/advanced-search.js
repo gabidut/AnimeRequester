@@ -113,6 +113,12 @@ export class AdvancedSearch {
             return "Le nombre minimum d'épisodes ne peut pas être supérieur au nombre maximum.";
         }
 
+        const scoreMin = this.getNumber("score-min");
+        const scoreMax = this.getNumber("score-max");
+        if (scoreMin !== null && scoreMax !== null && scoreMin > scoreMax) {
+            return "La note minimale ne peut pas être supérieure à la note maximale.";
+        }
+
         return null;
     }
 
@@ -140,6 +146,7 @@ export class AdvancedSearch {
         const yearMin = this.getNumber("year-min");
         const yearMax = this.getNumber("year-max");
         const scoreMin = this.getNumber("score-min");
+        const scoreMax = this.getNumber("score-max");
         const episodesMin = this.getNumber("episodes-min");
         const episodesMax = this.getNumber("episodes-max");
         const limit = parseInt(this.getValue("results-limit"), 10) || 10;
@@ -152,13 +159,16 @@ export class AdvancedSearch {
             filters.status = status;
         }
         if (yearMin !== null) {
-            filters.startDate = `${yearMin}-01-01`;
+            filters.minYear = yearMin;
         }
         if (yearMax !== null) {
-            filters.endDate = `${yearMax}-12-31`;
+            filters.maxYear = yearMax;
         }
         if (scoreMin !== null) {
             filters.minScore = scoreMin;
+        }
+        if (scoreMax !== null) {
+            filters.maxScore = scoreMax;
         }
         if (episodesMin !== null) {
             filters.minEpisodes = episodesMin;

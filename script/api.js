@@ -67,8 +67,8 @@ export class AnimeAPIWrapper {
      * @param {Object} [filters={}]
      * @param {string|null} [filters.type=null]
      * @param {string|null} [filters.status=null]
-     * @param {string|null} [filters.startDate=null]
-     * @param {string|null} [filters.endDate=null]
+     * @param {number|null} [filters.minYear=null]
+     * @param {number|null} [filters.maxYear=null]
      * @param {number|null} [filters.minScore=null]
      * @param {number|null} [filters.maxScore=null]
      * @param {number|null} [filters.minEpisodes=null]
@@ -97,11 +97,11 @@ export class AnimeAPIWrapper {
         if (filters.status) {
             params.set("status", filters.status);
         }
-        if (filters.startDate) {
-            params.set("start_date", filters.startDate);
+        if (filters.minYear !== null && filters.minYear !== undefined) {
+            params.set("min_year", filters.minYear.toString());
         }
-        if (filters.endDate) {
-            params.set("end_date", filters.endDate);
+        if (filters.maxYear !== null && filters.maxYear !== undefined) {
+            params.set("max_year", filters.maxYear.toString());
         }
         if (filters.minScore !== null && filters.minScore !== undefined) {
             params.set("min_score", filters.minScore.toString());

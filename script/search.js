@@ -20,8 +20,8 @@ export class Search {
      * @param {HTMLElement} resultZone 
      */
     constructor(animeAPI, resultZone) {
-        if (animeAPI === null) {
-            throw new Error("No API key provided");
+        if (!animeAPI) {
+            throw new Error("No API provided");
         }
         this.animeAPI = animeAPI;
 

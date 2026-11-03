@@ -303,6 +303,7 @@ main h2 {
 
 /* Libellés (formulaire avancé + filtres du classement) */
 #advanced-search-form label,
+#advanced-search-form .field-label,
 #ranking-filters label {
     display: block;
     font-size: 0.8rem;
@@ -312,7 +313,7 @@ main h2 {
     margin-bottom: 0.4rem;
 }
 
-/* Champs de plage (année, épisodes) : "De [ ]  À [ ]" */
+/* Champs de plage (année, note, épisodes) : "De [ ]  À [ ]" */
 #advanced-search-form div div {
     display: grid;
     grid-template-columns: auto 1fr;
