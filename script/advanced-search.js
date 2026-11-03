@@ -16,10 +16,6 @@ export class AdvancedSearch {
     genreSelect;
     /** @type {CardFactory} */
     cardFactory;
-    /** @type {number} */
-    currentPage = 1;
-    /** @type {Object|null} */
-    lastMeta = null;
 
     /**
      * @param {AnimeAPIWrapper} animeAPI
@@ -68,12 +64,10 @@ export class AdvancedSearch {
     initListeners() {
         this.form.addEventListener("submit", (event) => {
             event.preventDefault();
-            this.displayResults(1);
+            this.displayResults();
         });
 
         this.form.addEventListener("reset", () => {
-            this.currentPage = 1;
-            this.lastMeta = null;
             this.resultZone.innerHTML = "";
         });
     }
@@ -116,7 +110,7 @@ export class AdvancedSearch {
         const scoreMin = this.getNumber("score-min");
         const episodesMin = this.getNumber("episodes-min");
         const episodesMax = this.getNumber("episodes-max");
-        const limit = 100;
+        const limit = parseInt(this.getValue("results-limit"), 10) || 10;
 
         const filters = {};
         if (type) {
@@ -164,19 +158,16 @@ export class AdvancedSearch {
     }
 
     /**
-     * Display the results for the given page.
-     * @param {number} [page=1]
+     * Display the results for the current filters.
      */
-    async displayResults(page = 1) {
+    async displayResults() {
         if (!this.resultZone) {
             return;
         }
 
         const { search, genre, limit, filters, orderBy, sort } = this.collectFilters();
-        this.currentPage = page;
 
         this.resultZone.innerHTML = `
-            <h2>Résultats</h2>
             <div class="loading">
                 <div class="spinner"></div>
                 <p>Chargement des résultats...</p>
@@ -185,7 +176,7 @@ export class AdvancedSearch {
 
         try {
             const response = await this.animeAPI.getAnimeList(
-                page,
+                1,
                 limit,
                 search,
                 genre,
@@ -193,9 +184,8 @@ export class AdvancedSearch {
                 sort,
                 filters
             );
-            this.lastMeta = response.meta;
 
-            this.resultZone.innerHTML = "<h2>Résultats</h2>";
+            this.resultZone.innerHTML = "";
 
             if (!response.data || response.data.length === 0) {
                 const noResults = document.createElement("p");
@@ -208,50 +198,13 @@ export class AdvancedSearch {
             response.data.forEach((anime) => {
                 this.resultZone.appendChild(this.cardFactory.renderCard(anime));
             });
-
-            this.renderPagination();
         } catch (error) {
             console.error("Erreur lors de la recherche avancée :", error);
             this.resultZone.innerHTML = `
-                <h2>Résultats</h2>
                 <p class="error-message">
                     Une erreur est survenue lors de la recherche. Veuillez réessayer.
                 </p>
             `;
         }
-    }
-
-    /**
-     * Render previous/next pagination controls based on the last API metadata.
-     */
-    renderPagination() {
-        const meta = this.lastMeta;
-        if (!meta || !meta.totalPages || meta.totalPages <= 1) {
-            return;
-        }
-
-        const pagination = document.createElement("div");
-        pagination.className = "pagination";
-
-        const previousButton = document.createElement("button");
-        previousButton.type = "button";
-        previousButton.textContent = "Précédent";
-        previousButton.disabled = this.currentPage <= 1;
-        previousButton.addEventListener("click", () => this.displayResults(this.currentPage - 1));
-
-        const info = document.createElement("span");
-        info.className = "pagination-info";
-        info.textContent = `Page ${this.currentPage} / ${meta.totalPages}`;
-
-        const nextButton = document.createElement("button");
-        nextButton.type = "button";
-        nextButton.textContent = "Suivant";
-        nextButton.disabled = this.currentPage >= meta.totalPages;
-        nextButton.addEventListener("click", () => this.displayResults(this.currentPage + 1));
-
-        pagination.appendChild(previousButton);
-        pagination.appendChild(info);
-        pagination.appendChild(nextButton);
-        this.resultZone.appendChild(pagination);
     }
 }

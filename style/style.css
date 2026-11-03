@@ -613,42 +613,6 @@ main h2 {
     margin: 1.5rem auto;
 }
 
-.pagination {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.pagination button {
-    padding: 0.6rem 1.2rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    background: var(--bg-surface);
-    color: var(--text-primary);
-    font-family: var(--font-body);
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: background var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast);
-}
-
-.pagination button:hover:not(:disabled) {
-    background: var(--bg-card);
-    border-color: var(--border-hover);
-}
-
-.pagination button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.pagination-info {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
 footer {
     width: 100%;
     text-align: center;
