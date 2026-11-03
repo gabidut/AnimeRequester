@@ -116,7 +116,7 @@ export class AdvancedSearch {
         const scoreMin = this.getNumber("score-min");
         const episodesMin = this.getNumber("episodes-min");
         const episodesMax = this.getNumber("episodes-max");
-        const limit = parseInt(this.getValue("results-per-page"), 10) || 10;
+        const limit = 100;
 
         const filters = {};
         if (type) {
