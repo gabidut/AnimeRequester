@@ -3,14 +3,13 @@
  * https://github.com/gabidut/AnimeRequester
  */
 
-import {Anime} from "./anime.js";
 import {animeModal} from "./modal.js";
 
 export class CardFactory {
 
     /**
      * Render a card for the given anime.
-     * @param {Anime} anime
+     * @param {import("./anime.js").Anime} anime
      * @param {string|number|null} [rankDisplay=null]
      * @return {HTMLDivElement}
      */
@@ -57,15 +56,4 @@ export class CardFactory {
 
         return card;
     }
-}
-
-export function dev() {
-    const resultZone = document.getElementById("result-zone");
-    const cardFactory = new CardFactory(resultZone);
-
-    document.body.appendChild(cardFactory.renderCard(new Anime({
-        title: "Naruto",
-        image: "https://upload.wikimedia.org/wikipedia/en/9/94/NarutoCoverTankobon1.jpg",
-        synopsis: "Naruto Uzumaki, a young ninja who seeks recognition from his peers and dreams of becoming the Hokage, the leader of his village."
-    })));
 }

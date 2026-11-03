@@ -112,7 +112,6 @@ export class AnimeAPIWrapper {
         try {
             const response = await fetch(url, options);
             const result = await response.json();
-            console.log(result);
             return {
                 data: (result.data || []).map((item) => {
                     return this.mapToAnime(item);
@@ -189,28 +188,4 @@ export class AnimeAPIWrapper {
         }
     }
 
-    /**
-     * Function to get an anime by its ID from the API.
-     * @param {number|string} id
-     * @throws {Error} If the anime is not found or if there is a request error.
-     * @return {Promise<Anime>}
-     */
-    async getAnimeById(id) {
-        const url = `https://api.tenrai.org/v1/anime/${id}`;
-        const options = {
-            method: "GET",
-        };
-
-        try {
-            const response = await fetch(url, options);
-            const result = await response.json();
-            const item = result?.data ?? result;
-            if (!item || (Array.isArray(item) && item.length === 0)) {
-                throw new Error("Anime not found");
-            }
-            return this.mapToAnime(item);
-        } catch (error) {
-            throw new Error("Request error", error);
-        }
-    }
 }
