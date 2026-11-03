@@ -1,5 +1,5 @@
 /***
- * (C) 2026 AnimeRequester
+ * (C) 2026 gabidut76
  * https://github.com/gabidut/AnimeRequester
  */
 

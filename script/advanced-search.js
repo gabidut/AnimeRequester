@@ -1,5 +1,5 @@
 /***
- * (C) 2026 AnimeRequester
+ * (C) 2026 WewennJr
  * https://github.com/gabidut/AnimeRequester
  */
 
@@ -16,6 +16,18 @@ export class AdvancedSearch {
     genreSelect;
     /** @type {CardFactory} */
     cardFactory;
+    /** @type {Object|null} */
+    lastQuery = null;
+    /** @type {number} */
+    currentPage = 0;
+    /** @type {boolean} */
+    hasNextPage = false;
+    /** @type {HTMLButtonElement|null} */
+    loadMoreButton = null;
+    /** @type {boolean} */
+    isLoading = false;
+    /** @type {number} */
+    requestId = 0;
 
     /**
      * @param {AnimeAPIWrapper} animeAPI
@@ -68,6 +80,12 @@ export class AdvancedSearch {
         });
 
         this.form.addEventListener("reset", () => {
+            this.requestId++;
+            this.lastQuery = null;
+            this.currentPage = 0;
+            this.hasNextPage = false;
+            this.loadMoreButton = null;
+            this.isLoading = false;
             this.resultZone.innerHTML = "";
         });
     }
@@ -209,11 +227,23 @@ export class AdvancedSearch {
 
         const validationError = this.validateFilters();
         if (validationError) {
+            this.requestId++;
+            this.lastQuery = null;
+            this.currentPage = 0;
+            this.hasNextPage = false;
+            this.loadMoreButton = null;
+            this.isLoading = false;
             this.showError(validationError);
             return;
         }
 
-        const { search, genre, limit, filters, orderBy, sort } = this.collectFilters();
+        const requestId = ++this.requestId;
+        const query = this.collectFilters();
+        this.lastQuery = query;
+        this.currentPage = 1;
+        this.hasNextPage = false;
+        this.loadMoreButton = null;
+        this.isLoading = true;
 
         this.resultZone.innerHTML = `
             <div class="loading">
@@ -225,13 +255,17 @@ export class AdvancedSearch {
         try {
             const response = await this.animeAPI.getAnimeList(
                 1,
-                limit,
-                search,
-                genre,
-                orderBy,
-                sort,
-                filters
+                query.limit,
+                query.search,
+                query.genre,
+                query.orderBy,
+                query.sort,
+                query.filters
             );
+
+            if (requestId !== this.requestId) {
+                return;
+            }
 
             this.resultZone.innerHTML = "";
 
@@ -246,9 +280,122 @@ export class AdvancedSearch {
             response.data.forEach((anime) => {
                 this.resultZone.appendChild(this.cardFactory.renderCard(anime));
             });
+
+            this.hasNextPage = Boolean(response.meta?.hasNextPage);
+            this.updateLoadMoreButton();
         } catch (error) {
+            if (requestId !== this.requestId) {
+                return;
+            }
             console.error("Erreur lors de la recherche avancée :", error);
             this.showError("Une erreur est survenue lors de la recherche. Veuillez réessayer.");
+        } finally {
+            if (requestId === this.requestId) {
+                this.isLoading = false;
+            }
+        }
+    }
+
+    /**
+     * Load and append the next page of results.
+     */
+    async loadMore() {
+        if (this.isLoading || !this.hasNextPage || !this.lastQuery) {
+            return;
+        }
+
+        const requestId = this.requestId;
+        const query = this.lastQuery;
+        this.isLoading = true;
+        this.setLoadMoreLoading(true);
+
+        try {
+            const nextPage = this.currentPage + 1;
+            const response = await this.animeAPI.getAnimeList(
+                nextPage,
+                query.limit,
+                query.search,
+                query.genre,
+                query.orderBy,
+                query.sort,
+                query.filters
+            );
+
+            if (requestId !== this.requestId) {
+                return;
+            }
+
+            if (response.data && response.data.length > 0) {
+                response.data.forEach((anime) => {
+                    this.resultZone.appendChild(this.cardFactory.renderCard(anime));
+                });
+            }
+
+            this.currentPage = nextPage;
+            this.hasNextPage = Boolean(response.meta?.hasNextPage);
+            this.setLoadMoreLoading(false);
+            this.updateLoadMoreButton();
+        } catch (error) {
+            if (requestId !== this.requestId) {
+                return;
+            }
+            console.error("Erreur lors du chargement des résultats suivants :", error);
+            this.setLoadMoreLoading(false);
+            this.appendError("Impossible de charger plus de résultats. Veuillez réessayer.");
+        } finally {
+            if (requestId === this.requestId) {
+                this.isLoading = false;
+            }
+        }
+    }
+
+    /**
+     * Add or remove the "Voir plus" button depending on the API pagination.
+     */
+    updateLoadMoreButton() {
+        if (!this.hasNextPage) {
+            if (this.loadMoreButton) {
+                this.loadMoreButton.remove();
+                this.loadMoreButton = null;
+            }
+            return;
+        }
+
+        if (!this.loadMoreButton) {
+            this.loadMoreButton = document.createElement("button");
+            this.loadMoreButton.type = "button";
+            this.loadMoreButton.className = "load-more-button";
+            this.loadMoreButton.textContent = "Voir plus";
+            this.loadMoreButton.addEventListener("click", () => this.loadMore());
+        }
+
+        this.resultZone.appendChild(this.loadMoreButton);
+    }
+
+    /**
+     * Update the "Voir plus" button while a request is running.
+     * @param {boolean} loading
+     */
+    setLoadMoreLoading(loading) {
+        if (!this.loadMoreButton) {
+            return;
+        }
+        this.loadMoreButton.disabled = loading;
+        this.loadMoreButton.textContent = loading ? "Chargement..." : "Voir plus";
+    }
+
+    /**
+     * Display a non-blocking error without removing the current results.
+     * @param {string} message
+     */
+    appendError(message) {
+        const errorMessage = document.createElement("p");
+        errorMessage.className = "error-message";
+        errorMessage.textContent = message;
+        this.resultZone.appendChild(errorMessage);
+
+        if (this.loadMoreButton) {
+            this.resultZone.appendChild(this.loadMoreButton);
         }
     }
 }
