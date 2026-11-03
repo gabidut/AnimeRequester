@@ -45,6 +45,5 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
         ranking.initListeners();
         await ranking.loadGenres();
-        await ranking.displayRanking();
     }
 });

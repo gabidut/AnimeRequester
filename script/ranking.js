@@ -74,18 +74,6 @@ export class Ranking {
         if (this.rankingButton) {
             this.rankingButton.addEventListener("click", () => this.displayRanking());
         }
-
-        if (this.typeSelect) {
-            this.typeSelect.addEventListener("change", () => this.displayRanking());
-        }
-
-        if (this.genreSelect) {
-            this.genreSelect.addEventListener("change", () => this.displayRanking());
-        }
-
-        if (this.limitSelect) {
-            this.limitSelect.addEventListener("change", () => this.displayRanking());
-        }
     }
 
     /**
