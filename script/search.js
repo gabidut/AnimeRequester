@@ -46,13 +46,38 @@ export class Search {
 
 
     async displayResults(searchValue) {
-        this.resultZone.innerHTML = "<h2>Résultats</h2>";
-        const response = await this.animeAPI.getAnimeList(1, 10, searchValue);
-        response.data.forEach((anime) => {
-            this.resultZone.appendChild(
-                this.cardFactory.renderCard(anime)
-            );
-        });
+        this.resultZone.innerHTML = `
+            <h2>Résultats</h2>
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Chargement des résultats...</p>
+            </div>
+        `;
+
+        try {
+            const response = await this.animeAPI.getAnimeList(1, 10, searchValue);
+            this.resultZone.innerHTML = "<h2>Résultats</h2>";
+
+            if (!response.data || response.data.length === 0) {
+                const noResults = document.createElement("p");
+                noResults.className = "no-results";
+                noResults.textContent = "Aucun anime ne correspond à cette recherche.";
+                this.resultZone.appendChild(noResults);
+                return;
+            }
+
+            response.data.forEach((anime) => {
+                this.resultZone.appendChild(this.cardFactory.renderCard(anime));
+            });
+        } catch (error) {
+            console.error("Erreur lors de la recherche :", error);
+            this.resultZone.innerHTML = `
+                <h2>Résultats</h2>
+                <p class="error-message">
+                    Une erreur est survenue lors de la recherche. Veuillez réessayer.
+                </p>
+            `;
+        }
     }
 
 }

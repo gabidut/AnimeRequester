@@ -43,6 +43,20 @@ export class AnimeAPIWrapper {
     }
 
     /**
+     * Fetch a URL and return its JSON payload.
+     * @param {string} url
+     * @returns {Promise<any>}
+     * @throws {Error} If the request fails or the response is not valid JSON.
+     */
+    async fetchJson(url) {
+        const response = await fetch(url, { method: "GET" });
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+    }
+
+    /**
      * 
      * @param {number} page 
      * @param {number} limit 
@@ -105,15 +119,13 @@ export class AnimeAPIWrapper {
         const queryString = params.toString();
         const url = `https://api.tenrai.org/v1/anime${queryString ? `?${queryString}` : ""}`;
 
-        const options = {
-            method: "GET",
-        };
-
         try {
-            const response = await fetch(url, options);
-            const result = await response.json();
+            const result = await this.fetchJson(url);
+            if (!result || !Array.isArray(result.data)) {
+                throw new Error("Réponse de l'API invalide");
+            }
             return {
-                data: (result.data || []).map((item) => {
+                data: result.data.map((item) => {
                     return this.mapToAnime(item);
                 }),
                 meta: result.pagination ? {
@@ -124,7 +136,7 @@ export class AnimeAPIWrapper {
                 } : result.meta,
             };
         } catch (error) {
-            throw new Error("Request error", error);
+            throw new Error("Erreur lors de la récupération des animes", { cause: error });
         }
     }
 
@@ -172,19 +184,18 @@ export class AnimeAPIWrapper {
      */
     async getGenres() {
         const url = "https://api.tenrai.org/v1/genres/anime";
-        const options = {
-            method: "GET",
-        };
 
         try {
-            const response = await fetch(url, options);
-            const result = await response.json();
-            const genreList = Array.isArray(result) ? result : (result?.data ?? []);
+            const result = await this.fetchJson(url);
+            const genreList = Array.isArray(result) ? result : result?.data;
+            if (!Array.isArray(genreList)) {
+                throw new Error("Réponse de l'API invalide");
+            }
             return genreList.map((item) => {
                 return new AnimeGenre(item);
             });
         } catch (error) {
-            throw new Error("Request error", error);
+            throw new Error("Erreur lors de la récupération des genres", { cause: error });
         }
     }
 

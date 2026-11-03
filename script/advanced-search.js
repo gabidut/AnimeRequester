@@ -97,6 +97,38 @@ export class AdvancedSearch {
     }
 
     /**
+     * Validate the numeric ranges entered in the form.
+     * @returns {string|null} An error message, or null when the filters are valid.
+     */
+    validateFilters() {
+        const yearMin = this.getNumber("year-min");
+        const yearMax = this.getNumber("year-max");
+        if (yearMin !== null && yearMax !== null && yearMin > yearMax) {
+            return "L'année minimale ne peut pas être supérieure à l'année maximale.";
+        }
+
+        const episodesMin = this.getNumber("episodes-min");
+        const episodesMax = this.getNumber("episodes-max");
+        if (episodesMin !== null && episodesMax !== null && episodesMin > episodesMax) {
+            return "Le nombre minimum d'épisodes ne peut pas être supérieur au nombre maximum.";
+        }
+
+        return null;
+    }
+
+    /**
+     * Display an error message in the result zone.
+     * @param {string} message
+     */
+    showError(message) {
+        this.resultZone.innerHTML = "";
+        const errorMessage = document.createElement("p");
+        errorMessage.className = "error-message";
+        errorMessage.textContent = message;
+        this.resultZone.appendChild(errorMessage);
+    }
+
+    /**
      * Read the form and build the API parameters.
      * @returns {{search: string|null, genre: string|null, limit: number, filters: Object, orderBy: string|null, sort: string|null}}
      */
@@ -165,6 +197,12 @@ export class AdvancedSearch {
             return;
         }
 
+        const validationError = this.validateFilters();
+        if (validationError) {
+            this.showError(validationError);
+            return;
+        }
+
         const { search, genre, limit, filters, orderBy, sort } = this.collectFilters();
 
         this.resultZone.innerHTML = `
@@ -200,11 +238,7 @@ export class AdvancedSearch {
             });
         } catch (error) {
             console.error("Erreur lors de la recherche avancée :", error);
-            this.resultZone.innerHTML = `
-                <p class="error-message">
-                    Une erreur est survenue lors de la recherche. Veuillez réessayer.
-                </p>
-            `;
+            this.showError("Une erreur est survenue lors de la recherche. Veuillez réessayer.");
         }
     }
 }
