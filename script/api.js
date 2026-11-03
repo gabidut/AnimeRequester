@@ -4,6 +4,8 @@
  */
 import {Anime, AnimeGenre} from "./anime.js";
 
+const REQUEST_TIMEOUT_MS = 10000;
+
 export class AnimeAPIWrapper {
 
     /**
@@ -46,14 +48,24 @@ export class AnimeAPIWrapper {
      * Fetch a URL and return its JSON payload.
      * @param {string} url
      * @returns {Promise<any>}
-     * @throws {Error} If the request fails or the response is not valid JSON.
+     * @throws {Error} If the request times out, fails, or the response is not valid JSON.
      */
     async fetchJson(url) {
-        const response = await fetch(url, { method: "GET" });
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status} ${response.statusText}`);
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        } catch (error) {
+            if (error.name === "TimeoutError") {
+                throw new Error("La requête à l'API a expiré. Veuillez réessayer.", { cause: error });
+            }
+            throw error;
         }
-        return response.json();
     }
 
     /**
