@@ -5,6 +5,7 @@
 
 import { AnimeAPIWrapper } from "./api.js";
 import { Search } from "./search.js";
+import { AdvancedSearch } from "./advanced-search.js";
 import { Ranking } from "./ranking.js";
 
 const animeAPI = new AnimeAPIWrapper();
@@ -18,6 +19,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (searchInput && searchButton && resultZone) {
         const search = new Search(animeAPI, resultZone);
         search.initListeners(searchInput, searchButton);
+    }
+
+    // Page Recherche avancée
+    const advancedSearchForm = document.getElementById("advanced-search-form");
+    if (advancedSearchForm && resultZone) {
+        const advancedSearch = new AdvancedSearch(animeAPI, advancedSearchForm, resultZone);
+        advancedSearch.initListeners();
+        await advancedSearch.loadGenres();
     }
 
     // Page Classement

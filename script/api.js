@@ -50,9 +50,18 @@ export class AnimeAPIWrapper {
      * @param {string|null} genre
      * @param {string|null} [orderBy=null]
      * @param {string|null} [sort=null]
+     * @param {Object} [filters={}]
+     * @param {string|null} [filters.type=null]
+     * @param {string|null} [filters.status=null]
+     * @param {string|null} [filters.startDate=null]
+     * @param {string|null} [filters.endDate=null]
+     * @param {number|null} [filters.minScore=null]
+     * @param {number|null} [filters.maxScore=null]
+     * @param {number|null} [filters.minEpisodes=null]
+     * @param {number|null} [filters.maxEpisodes=null]
      * @returns {Promise<{meta: {currentPage: number, totalPages: number, totalCount: number, hasNextPage: boolean}, data: Anime[]}>}
      */
-    async getAnimeList(page = 1, limit = 10, search = null, genre = null, orderBy = null, sort = null) {
+    async getAnimeList(page = 1, limit = 10, search = null, genre = null, orderBy = null, sort = null, filters = {}) {
         const params = new URLSearchParams();
         if (search) {
             params.set("q", search);
@@ -67,6 +76,30 @@ export class AnimeAPIWrapper {
         }
         if (sort) {
             params.set("sort", sort);
+        }
+        if (filters.type) {
+            params.set("type", filters.type);
+        }
+        if (filters.status) {
+            params.set("status", filters.status);
+        }
+        if (filters.startDate) {
+            params.set("start_date", filters.startDate);
+        }
+        if (filters.endDate) {
+            params.set("end_date", filters.endDate);
+        }
+        if (filters.minScore !== null && filters.minScore !== undefined) {
+            params.set("min_score", filters.minScore.toString());
+        }
+        if (filters.maxScore !== null && filters.maxScore !== undefined) {
+            params.set("max_score", filters.maxScore.toString());
+        }
+        if (filters.minEpisodes !== null && filters.minEpisodes !== undefined) {
+            params.set("min_episodes", filters.minEpisodes.toString());
+        }
+        if (filters.maxEpisodes !== null && filters.maxEpisodes !== undefined) {
+            params.set("max_episodes", filters.maxEpisodes.toString());
         }
 
         const queryString = params.toString();
