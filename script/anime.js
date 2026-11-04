@@ -1,3 +1,8 @@
+/***
+ * (C) 2026 gabidut76
+ * https://github.com/gabidut/AnimeRequester
+ */
+
 /**
  * @typedef {Object} AnimeData
  * @property {number|null} [id]

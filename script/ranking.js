@@ -1,5 +1,5 @@
 /***
- * (C) 2026 AnimeRequester
+ * (C) 2026 gabidut76
  * https://github.com/gabidut/AnimeRequester
  */
 
@@ -73,18 +73,6 @@ export class Ranking {
     initListeners() {
         if (this.rankingButton) {
             this.rankingButton.addEventListener("click", () => this.displayRanking());
-        }
-
-        if (this.typeSelect) {
-            this.typeSelect.addEventListener("change", () => this.displayRanking());
-        }
-
-        if (this.genreSelect) {
-            this.genreSelect.addEventListener("change", () => this.displayRanking());
-        }
-
-        if (this.limitSelect) {
-            this.limitSelect.addEventListener("change", () => this.displayRanking());
         }
     }
 

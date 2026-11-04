@@ -1,8 +1,10 @@
 /***
- * (C) 2026 Hugo FAVEROULT
+ * (C) 2026 Hugo FAVEROULT, WewennJr
  * https://github.com/gabidut/AnimeRequester
  */
 import {Anime, AnimeGenre} from "./anime.js";
+
+const REQUEST_TIMEOUT_MS = 10000;
 
 export class AnimeAPIWrapper {
 
@@ -43,6 +45,30 @@ export class AnimeAPIWrapper {
     }
 
     /**
+     * Fetch a URL and return its JSON payload.
+     * @param {string} url
+     * @returns {Promise<any>}
+     * @throws {Error} If the request times out, fails, or the response is not valid JSON.
+     */
+    async fetchJson(url) {
+        try {
+            const response = await fetch(url, {
+                method: "GET",
+                signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status} ${response.statusText}`);
+            }
+            return response.json();
+        } catch (error) {
+            if (error.name === "TimeoutError") {
+                throw new Error("La requête à l'API a expiré. Veuillez réessayer.", { cause: error });
+            }
+            throw error;
+        }
+    }
+
+    /**
      * 
      * @param {number} page 
      * @param {number} limit 
@@ -50,9 +76,18 @@ export class AnimeAPIWrapper {
      * @param {string|null} genre
      * @param {string|null} [orderBy=null]
      * @param {string|null} [sort=null]
+     * @param {Object} [filters={}]
+     * @param {string|null} [filters.type=null]
+     * @param {string|null} [filters.status=null]
+     * @param {number|null} [filters.minYear=null]
+     * @param {number|null} [filters.maxYear=null]
+     * @param {number|null} [filters.minScore=null]
+     * @param {number|null} [filters.maxScore=null]
+     * @param {number|null} [filters.minEpisodes=null]
+     * @param {number|null} [filters.maxEpisodes=null]
      * @returns {Promise<{meta: {currentPage: number, totalPages: number, totalCount: number, hasNextPage: boolean}, data: Anime[]}>}
      */
-    async getAnimeList(page = 1, limit = 10, search = null, genre = null, orderBy = null, sort = null) {
+    async getAnimeList(page = 1, limit = 10, search = null, genre = null, orderBy = null, sort = null, filters = {}) {
         const params = new URLSearchParams();
         if (search) {
             params.set("q", search);
@@ -68,20 +103,41 @@ export class AnimeAPIWrapper {
         if (sort) {
             params.set("sort", sort);
         }
+        if (filters.type) {
+            params.set("type", filters.type);
+        }
+        if (filters.status) {
+            params.set("status", filters.status);
+        }
+        if (filters.minYear !== null && filters.minYear !== undefined) {
+            params.set("min_year", filters.minYear.toString());
+        }
+        if (filters.maxYear !== null && filters.maxYear !== undefined) {
+            params.set("max_year", filters.maxYear.toString());
+        }
+        if (filters.minScore !== null && filters.minScore !== undefined) {
+            params.set("min_score", filters.minScore.toString());
+        }
+        if (filters.maxScore !== null && filters.maxScore !== undefined) {
+            params.set("max_score", filters.maxScore.toString());
+        }
+        if (filters.minEpisodes !== null && filters.minEpisodes !== undefined) {
+            params.set("min_episodes", filters.minEpisodes.toString());
+        }
+        if (filters.maxEpisodes !== null && filters.maxEpisodes !== undefined) {
+            params.set("max_episodes", filters.maxEpisodes.toString());
+        }
 
         const queryString = params.toString();
         const url = `https://api.tenrai.org/v1/anime${queryString ? `?${queryString}` : ""}`;
 
-        const options = {
-            method: "GET",
-        };
-
         try {
-            const response = await fetch(url, options);
-            const result = await response.json();
-            console.log(result);
+            const result = await this.fetchJson(url);
+            if (!result || !Array.isArray(result.data)) {
+                throw new Error("Réponse de l'API invalide");
+            }
             return {
-                data: (result.data || []).map((item) => {
+                data: result.data.map((item) => {
                     return this.mapToAnime(item);
                 }),
                 meta: result.pagination ? {
@@ -92,7 +148,7 @@ export class AnimeAPIWrapper {
                 } : result.meta,
             };
         } catch (error) {
-            throw new Error("Request error", error);
+            throw new Error("Erreur lors de la récupération des animes", { cause: error });
         }
     }
 
@@ -140,44 +196,19 @@ export class AnimeAPIWrapper {
      */
     async getGenres() {
         const url = "https://api.tenrai.org/v1/genres/anime";
-        const options = {
-            method: "GET",
-        };
 
         try {
-            const response = await fetch(url, options);
-            const result = await response.json();
-            const genreList = Array.isArray(result) ? result : (result?.data ?? []);
+            const result = await this.fetchJson(url);
+            const genreList = Array.isArray(result) ? result : result?.data;
+            if (!Array.isArray(genreList)) {
+                throw new Error("Réponse de l'API invalide");
+            }
             return genreList.map((item) => {
                 return new AnimeGenre(item);
             });
         } catch (error) {
-            throw new Error("Request error", error);
+            throw new Error("Erreur lors de la récupération des genres", { cause: error });
         }
     }
 
-    /**
-     * Function to get an anime by its ID from the API.
-     * @param {number|string} id
-     * @throws {Error} If the anime is not found or if there is a request error.
-     * @return {Promise<Anime>}
-     */
-    async getAnimeById(id) {
-        const url = `https://api.tenrai.org/v1/anime/${id}`;
-        const options = {
-            method: "GET",
-        };
-
-        try {
-            const response = await fetch(url, options);
-            const result = await response.json();
-            const item = result?.data ?? result;
-            if (!item || (Array.isArray(item) && item.length === 0)) {
-                throw new Error("Anime not found");
-            }
-            return this.mapToAnime(item);
-        } catch (error) {
-            throw new Error("Request error", error);
-        }
-    }
 }

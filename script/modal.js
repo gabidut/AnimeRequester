@@ -12,8 +12,6 @@ export class AnimeModal {
     content = null;
     /** @type {HTMLButtonElement|null} */
     closeButton = null;
-    /** @type {Object|null} */
-    currentAnime = null;
 
     constructor() {
         this.init();
@@ -104,7 +102,6 @@ export class AnimeModal {
             this.init();
         }
 
-        this.currentAnime = anime;
         this.renderContent(anime);
 
         this.backdrop.classList.add("is-visible");
